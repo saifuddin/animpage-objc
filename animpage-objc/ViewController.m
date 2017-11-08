@@ -32,9 +32,9 @@
     _initialPositionForLP = CGRectMake(0 + 20 + 20, 50, self.view.frame.size.width - 20 - 20 - 20 - 20, self.view.frame.size.height - 70 - 70 - 70);
     _behindView.frame = _initialPositionForLP;
     _behindView.alpha = 0.5;
-    
+
     _outOfViewPositionForFP = CGRectMake( _initialPositionForFP.origin.x, -(_initialPositionForFP.origin.y + _initialPositionForFP.size.height), _initialPositionForFP.size.width, _initialPositionForFP.size.height);
-    
+
     _triggerHorizontalLine = self.view.frame.size.height*(0.9);
     [_dragView setUserInteractionEnabled:YES];
 
@@ -65,6 +65,10 @@
     // Here you can customize for example the minimum and maximum number of fingers required
     panSwipeRecognizer.minimumNumberOfTouches = 1;
     [_dragView addGestureRecognizer:panSwipeRecognizer];
+    
+    panSwipeRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanSwipe:)];
+    panSwipeRecognizer.minimumNumberOfTouches = 1;
+    [_middleView addGestureRecognizer:panSwipeRecognizer];
 }
 
 #define SWIPE_UP_THRESHOLD -1000.0f
@@ -129,6 +133,7 @@
         {
             // TODO: Detected a swipe down
             NSLog(@"swipe down");
+            [self moveViewsToBackground];
         }
         else
         {
@@ -170,6 +175,37 @@
                         options:UIViewAnimationOptionCurveEaseIn
                      animations:^{
                          _behindView.frame = _initialPositionForMP;
+                     }
+                     completion:nil];
+}
+
+- (void)moveViewsToBackground
+{
+    [UIView animateWithDuration:0.5
+                          delay:0
+         usingSpringWithDamping:0.9
+          initialSpringVelocity:0
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         _middleView.frame = _initialPositionForMP;
+                     }
+                     completion:nil];
+    [UIView animateWithDuration:0.5
+                          delay:0.1
+         usingSpringWithDamping:0.9
+          initialSpringVelocity:0
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         _behindView.frame = _initialPositionForLP;
+                     }
+                     completion:nil];
+    [UIView animateWithDuration:0.7
+                          delay:0
+         usingSpringWithDamping:0.9
+          initialSpringVelocity:0
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         _dragView.frame = _initialPositionForFP;
                      }
                      completion:nil];
 }
