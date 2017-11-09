@@ -101,15 +101,15 @@
                      completion:nil];
 
     // Take a screenshot of middleView first
-//    middleView.alpha = 1;
-//    UIGraphicsBeginImageContext(middleView.bounds.size);
-//    [middleView.layer renderInContext:UIGraphicsGetCurrentContext()];
-//    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
-//    UIGraphicsEndImageContext();
-//    UIImageView *screenshot = [[UIImageView alloc] initWithImage:img];
-//    screenshot.frame = middleView.frame;
-//    middleView.alpha = 0;
-//    [self.view insertSubview:screenshot aboveSubview:middleView];
+    middleView.alpha = 1;
+    UIGraphicsBeginImageContext(middleView.bounds.size);
+    [middleView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    UIImageView *screenshot = [[UIImageView alloc] initWithImage:img];
+    screenshot.frame = middleView.frame;
+    middleView.alpha = 0;
+    [self.view insertSubview:screenshot aboveSubview:middleView];
     //
     [UIView animateWithDuration:0.5
                           delay:0.1
@@ -118,7 +118,7 @@
                         options:UIViewAnimationOptionCurveEaseIn
                      animations:^{
                          middleView.frame = _initialPositionForFrontView;
-//                         screenshot.frame = _initialPositionForFrontView;
+                         screenshot.frame = _initialPositionForFrontView;
                      }
                      completion:^(BOOL finished){
                          middleView.alpha = 1;
