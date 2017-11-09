@@ -8,293 +8,277 @@
 
 #import "ViewController.h"
 
-@interface ViewController ()
-@property (weak, nonatomic) IBOutlet UIView *dragView;
-@property (weak, nonatomic) IBOutlet UIView *middleView;
-@property (weak, nonatomic) IBOutlet UIView *behindView;
-@property (nonatomic) CGFloat triggerHorizontalLine;
-@property (nonatomic) CGRect initialPositionForFP;
-@property (nonatomic) CGRect initialPositionForMP;
-@property (nonatomic) CGRect initialPositionForLP;
-@property (nonatomic) CGRect outOfViewPositionForFP;
-@end
-
-@implementation ViewController
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    _initialPositionForFP = CGRectMake(0, 100, self.view.frame.size.width, self.view.frame.size.height - 100);
-    _dragView.frame = _initialPositionForFP;
-    _dragView.alpha = 0.5;
-    _initialPositionForMP = CGRectMake(0 + 20, 70, self.view.frame.size.width - 20 - 20, self.view.frame.size.height - 70 - 70);
-    _middleView.frame = _initialPositionForMP;
-    _middleView.alpha = 0.5;
-    _initialPositionForLP = CGRectMake(0 + 20 + 20, 50, self.view.frame.size.width - 20 - 20 - 20 - 20, self.view.frame.size.height - 70 - 70 - 70);
-    _behindView.frame = _initialPositionForLP;
-    _behindView.alpha = 0.5;
-
-    _outOfViewPositionForFP = CGRectMake( _initialPositionForFP.origin.x, -(_initialPositionForFP.origin.y + _initialPositionForFP.size.height), _initialPositionForFP.size.width, _initialPositionForFP.size.height);
-
-    _triggerHorizontalLine = self.view.frame.size.height*(0.9);
-    [_dragView setUserInteractionEnabled:YES];
-
-//    UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panned:)];
-//    UISwipeGestureRecognizer * swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swiped:)];
-//    [pan requireGestureRecognizerToFail:swipe];
-//    swipe.direction = (UISwipeGestureRecognizerDirectionUp | UISwipeGestureRecognizerDirectionDown);
-//
-//    [_dragView addGestureRecognizer:pan];
-//    [_dragView addGestureRecognizer:swipe];
-//    UISwipeGestureRecognizer *swipeUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swiped:)];
-//    swipeUp.direction = (UISwipeGestureRecognizerDirectionUp | UISwipeGestureRecognizerDirectionDown);
-//    [_dragView addGestureRecognizer:swipeUp];
-//
-//    UISwipeGestureRecognizer *swipeDown = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swiped:)];
-//    [_dragView addGestureRecognizer:swipeDown];
-//
-//    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panned:)];
-//    [panGesture requireGestureRecognizerToFail:swipeUp];
-//    [panGesture requireGestureRecognizerToFail:swipeDown];
-//    [_dragView addGestureRecognizer:panGesture];
-    [self setupRecognizer];
-}
-
-- (void)setupRecognizer
-{
-    UIPanGestureRecognizer* panSwipeRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanSwipe:)];
-    // Here you can customize for example the minimum and maximum number of fingers required
-    panSwipeRecognizer.minimumNumberOfTouches = 1;
-    [_dragView addGestureRecognizer:panSwipeRecognizer];
-    
-    panSwipeRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanSwipe:)];
-    panSwipeRecognizer.minimumNumberOfTouches = 1;
-    [_middleView addGestureRecognizer:panSwipeRecognizer];
-}
+#define TOP 0
+#define FRONT 1
+#define MIDDLE 2
+#define BACK 3
+#define SCREENSHOT 4
 
 #define SWIPE_UP_THRESHOLD -1000.0f
 #define SWIPE_DOWN_THRESHOLD 1000.0f
 #define SWIPE_LEFT_THRESHOLD -1000.0f
 #define SWIPE_RIGHT_THRESHOLD 1000.0f
 
+@interface ViewController ()
+@property (weak, nonatomic) IBOutlet UIView *view1;
+@property (weak, nonatomic) IBOutlet UIView *view2;
+@property (weak, nonatomic) IBOutlet UIView *view3;
+@property (weak, nonatomic) IBOutlet UIView *view4;
+@property (strong, nonatomic) NSMutableArray *stackedPages;
+@property (strong, nonatomic) UIPanGestureRecognizer *panSwipeRecognizer;
+@property (nonatomic) CGRect initialPositionForTopView;
+@property (nonatomic) CGRect initialPositionForFrontView;
+@property (nonatomic) CGRect initialPositionForMiddleView;
+@property (nonatomic) CGRect initialPositionForBackView;
+@end
+
+@implementation ViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    _initialPositionForFrontView = CGRectMake(0, 100, self.view.frame.size.width, self.view.frame.size.height - 100);
+    _initialPositionForTopView = CGRectMake( _initialPositionForFrontView.origin.x, -_initialPositionForFrontView.size.height, _initialPositionForFrontView.size.width, _initialPositionForFrontView.size.height);
+    _initialPositionForMiddleView = CGRectMake(0 + 20, 70, self.view.frame.size.width - 20 - 20, self.view.frame.size.height - 70 - 70);
+    _initialPositionForBackView = CGRectMake(0 + 20 + 20, 50, self.view.frame.size.width - 20 - 20 - 20 - 20, self.view.frame.size.height - 70 - 70 - 70);
+    
+    _view1.frame = _initialPositionForTopView;
+    _view2.frame = _initialPositionForFrontView;
+    _view3.frame = _initialPositionForMiddleView;
+    _view3.alpha = 0.4;
+    _view4.frame = _initialPositionForBackView;
+    _view4.alpha = 0.2;
+    
+    // Postions: Top, Front, Middle, Back
+    _stackedPages = [NSMutableArray arrayWithObjects:_view1, _view2, _view3, _view4, nil];
+    
+    _panSwipeRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanSwipe:)];
+    _panSwipeRecognizer.minimumNumberOfTouches = 1;
+    
+    [self resetRecognizer];
+    NSLog(@"%@", _stackedPages);
+}
+
+- (void)shiftViewsInArrayRight
+{
+    [_stackedPages insertObject:_stackedPages.lastObject atIndex:0];
+    [_stackedPages removeLastObject];
+    NSLog(@"%@", _stackedPages);
+}
+
+- (void)shiftViewsInArrayLeft
+{
+    [_stackedPages addObject:_stackedPages.firstObject];
+    [_stackedPages removeObjectAtIndex:0];
+    NSLog(@"%@", _stackedPages);
+}
+
+- (void)resetRecognizer
+{
+    UIView *topView = _stackedPages[TOP];
+    [topView removeGestureRecognizer:_panSwipeRecognizer];
+    
+    UIView *frontView = _stackedPages[FRONT];
+    [frontView addGestureRecognizer:_panSwipeRecognizer];
+}
+
+- (void)animateViewsShiftForward
+{
+    UIView *topView = _stackedPages[TOP];
+    UIView *frontView = _stackedPages[FRONT];
+    UIView *middleView = _stackedPages[MIDDLE];
+    UIView *backView = _stackedPages[BACK];
+    
+    [UIView animateWithDuration:0.5
+                          delay:0
+         usingSpringWithDamping:0.9
+          initialSpringVelocity:0
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         frontView.frame = _initialPositionForTopView;;
+                         frontView.alpha = 1;
+                     }
+                     completion:nil];
+
+    // Take a screenshot of middleView first
+//    middleView.alpha = 1;
+//    UIGraphicsBeginImageContext(middleView.bounds.size);
+//    [middleView.layer renderInContext:UIGraphicsGetCurrentContext()];
+//    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
+//    UIImageView *screenshot = [[UIImageView alloc] initWithImage:img];
+//    screenshot.frame = middleView.frame;
+//    middleView.alpha = 0;
+//    [self.view insertSubview:screenshot aboveSubview:middleView];
+    //
+    [UIView animateWithDuration:0.5
+                          delay:0.1
+         usingSpringWithDamping:0.9
+          initialSpringVelocity:0
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         middleView.frame = _initialPositionForFrontView;
+//                         screenshot.frame = _initialPositionForFrontView;
+                     }
+                     completion:^(BOOL finished){
+                         middleView.alpha = 1;
+//                         [screenshot removeFromSuperview];
+                     }];
+    [UIView animateWithDuration:0.7
+                          delay:0.2
+         usingSpringWithDamping:0.9
+          initialSpringVelocity:0
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         backView.frame = _initialPositionForMiddleView;
+                         backView.alpha = 0.4;
+
+                     }
+                     completion:nil];
+    
+    // Bring topView close but not quiet backViewFrame
+    // Then animate going forward a bit
+    [self.view sendSubviewToBack:topView];
+    topView.alpha = 0;
+    topView.frame = CGRectMake(_initialPositionForBackView.origin.x + 5, _initialPositionForBackView.origin.y - 5, _initialPositionForBackView.size.width - 10, _initialPositionForBackView.size.height - 10);
+    [UIView animateWithDuration:0.4
+                          delay:0.3
+         usingSpringWithDamping:0.9
+          initialSpringVelocity:0
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         topView.frame = _initialPositionForBackView;
+                         topView.alpha = 0.2;
+                     }
+                     completion:nil];
+}
+
+- (void)animateViewsShiftBackward
+{
+    UIView *topView = _stackedPages[TOP];
+    UIView *frontView = _stackedPages[FRONT];
+    UIView *middleView = _stackedPages[MIDDLE];
+    UIView *backView = _stackedPages[BACK];
+    
+    [UIView animateWithDuration:0.5
+                          delay:0
+         usingSpringWithDamping:0.9
+          initialSpringVelocity:0
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         frontView.frame = _initialPositionForMiddleView;
+                         frontView.alpha = 0.4;
+                     }
+                     completion:nil];
+    [UIView animateWithDuration:0.5
+                          delay:0.1
+         usingSpringWithDamping:0.9
+          initialSpringVelocity:0
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         middleView.frame = _initialPositionForBackView;
+                         middleView.alpha = 0.2;
+                     }
+                     completion:nil];
+    [UIView animateWithDuration:0.5
+                          delay:0
+         usingSpringWithDamping:0.9
+          initialSpringVelocity:0
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         topView.frame = _initialPositionForFrontView;
+                         topView.alpha = 1;
+                     }
+                     completion:nil];
+    
+    backView.alpha = 1;
+    backView.frame = _initialPositionForTopView;
+    [self.view bringSubviewToFront:backView];
+}
+
 - (void)handlePanSwipe:(UIPanGestureRecognizer*)recognizer
 {
-    // TODO: Here, you should translate your target view using this translation
+    UIView *frontView = _stackedPages[FRONT];
+    UIView *topView = _stackedPages[TOP];
+    
     CGPoint translation = [recognizer translationInView:self.view];
-    _dragView.center = CGPointMake(_dragView.center.x, _dragView.center.y + translation.y);//CGPoint(x: viewDrag.center.x + translation.x, y: viewDrag.center.y + translation.y)
+    frontView.center = CGPointMake(frontView.center.x, frontView.center.y + translation.y);
+    topView.center = CGPointMake(topView.center.x, topView.center.y + translation.y);
+    
     [recognizer setTranslation:CGPointZero inView:self.view];
-    // But also, detect the swipe gesture
 
     if (recognizer.state == UIGestureRecognizerStateEnded)
     {
         NSLog(@"ended");
         CGPoint vel = [recognizer velocityInView:recognizer.view];
         
-        if (vel.y < SWIPE_UP_THRESHOLD)
+        if (vel.x < SWIPE_LEFT_THRESHOLD)
+        {
+            NSLog(@"swipe left");
+            [UIView animateWithDuration:0.5
+                                  delay:0
+                 usingSpringWithDamping:0.9
+                  initialSpringVelocity:0
+                                options:UIViewAnimationOptionCurveEaseIn
+                             animations:^{
+                                 frontView.frame = _initialPositionForFrontView;
+                                 frontView.alpha = 1;
+                             }
+                             completion:nil];
+        }
+        else if (vel.x > SWIPE_RIGHT_THRESHOLD)
+        {
+            NSLog(@"swipe right");
+            [UIView animateWithDuration:0.5
+                                  delay:0
+                 usingSpringWithDamping:0.9
+                  initialSpringVelocity:0
+                                options:UIViewAnimationOptionCurveEaseIn
+                             animations:^{
+                                 frontView.frame = _initialPositionForFrontView;
+                                 frontView.alpha = 1;
+                             }
+                             completion:nil];
+        }
+        else if (vel.y < SWIPE_UP_THRESHOLD)
         {
             // TODO: Detected a swipe up
             NSLog(@"swipe up");
-            CGFloat bottomLeftCorner = _dragView.frame.origin.y + _dragView.frame.size.height;
-            if (bottomLeftCorner < _triggerHorizontalLine) {
-                NSLog(@"should bring forward");
-                [UIView animateWithDuration:0.7
-                                      delay:0
-                     usingSpringWithDamping:0.9
-                      initialSpringVelocity:0
-                                    options:UIViewAnimationOptionCurveEaseIn
-                                 animations:^{
-                                     _dragView.frame = _outOfViewPositionForFP;
-                                 }
-                                 completion:nil];
-                [self moveViewsToForeground];
-            }
-            else {
-                NSLog(@"bring to back");
-                [UIView animateWithDuration:0.5
-                                      delay:0
-                     usingSpringWithDamping:0.9
-                      initialSpringVelocity:0
-                                    options:UIViewAnimationOptionCurveEaseIn
-                                 animations:^{
-                                     _middleView.frame = _initialPositionForMP;
-                                 }
-                                 completion:nil];
-                [UIView animateWithDuration:0.5
-                                      delay:0.1
-                     usingSpringWithDamping:0.9
-                      initialSpringVelocity:0
-                                    options:UIViewAnimationOptionCurveEaseIn
-                                 animations:^{
-                                     _behindView.frame = _initialPositionForLP;
-                                 }
-                                 completion:nil];
-            }
+            [self animateViewsShiftForward];
+            [self shiftViewsInArrayLeft];
         }
         else if (vel.y > SWIPE_DOWN_THRESHOLD)
         {
             // TODO: Detected a swipe down
             NSLog(@"swipe down");
-            [self moveViewsToBackground];
+            [self animateViewsShiftBackward];
+            [self shiftViewsInArrayRight];
         }
         else
         {
-            NSLog(@"lifted finger");
-            [UIView animateWithDuration:0.7
-                                  delay:0
-                 usingSpringWithDamping:0.9
-                  initialSpringVelocity:0
-                                options:UIViewAnimationOptionCurveEaseIn
-                             animations:^{
-                                 _dragView.frame = _outOfViewPositionForFP;
-                             }
-                             completion:nil];
-            [self moveViewsToForeground];
-            // TODO:
             // Here, the user lifted the finger/fingers but didn't swipe.
-            // If you need you can implement a snapping behaviour, where based on the location of your         targetView,
-            // you focus back on the targetView or on some next view.
-            // It's your call
+            NSLog(@"lifted finger");
+            
+            // Check if moving up
+            if (frontView.frame.origin.y > _initialPositionForFrontView.origin.y)
+            {
+                [self animateViewsShiftBackward];
+                [self shiftViewsInArrayRight];
+            }
+            else
+            {
+                [self animateViewsShiftForward];
+                [self shiftViewsInArrayLeft];
+            }
         }
     }
+    [self resetRecognizer];
 }
 
-- (void)moveViewsToForeground
+- (CGFloat)bottomLeftCornerY:(UIView *)view
 {
-    [UIView animateWithDuration:0.5
-                          delay:0
-         usingSpringWithDamping:0.9
-          initialSpringVelocity:0
-                        options:UIViewAnimationOptionCurveEaseIn
-                     animations:^{
-                         _middleView.frame = _initialPositionForFP;
-                     }
-                     completion:nil];
-    [UIView animateWithDuration:0.5
-                          delay:0.1
-         usingSpringWithDamping:0.9
-          initialSpringVelocity:0
-                        options:UIViewAnimationOptionCurveEaseIn
-                     animations:^{
-                         _behindView.frame = _initialPositionForMP;
-                     }
-                     completion:nil];
+    return view.frame.origin.y + view.frame.size.height;
 }
-
-- (void)moveViewsToBackground
-{
-    [UIView animateWithDuration:0.5
-                          delay:0
-         usingSpringWithDamping:0.9
-          initialSpringVelocity:0
-                        options:UIViewAnimationOptionCurveEaseIn
-                     animations:^{
-                         _middleView.frame = _initialPositionForMP;
-                     }
-                     completion:nil];
-    [UIView animateWithDuration:0.5
-                          delay:0.1
-         usingSpringWithDamping:0.9
-          initialSpringVelocity:0
-                        options:UIViewAnimationOptionCurveEaseIn
-                     animations:^{
-                         _behindView.frame = _initialPositionForLP;
-                     }
-                     completion:nil];
-    [UIView animateWithDuration:0.7
-                          delay:0
-         usingSpringWithDamping:0.9
-          initialSpringVelocity:0
-                        options:UIViewAnimationOptionCurveEaseIn
-                     animations:^{
-                         _dragView.frame = _initialPositionForFP;
-                     }
-                     completion:nil];
-}
-
-- (void)swipeView:(UISwipeGestureRecognizer*)sender
-{
-    if (sender.direction == UISwipeGestureRecognizerDirectionUp) {
-        [UIView animateWithDuration:0.7
-                              delay:0
-             usingSpringWithDamping:0.9
-              initialSpringVelocity:0
-                            options:UIViewAnimationOptionCurveEaseIn
-                         animations:^{
-                             _dragView.frame = _outOfViewPositionForFP;
-                         }
-                         completion:nil];
-    }
-    else if (sender.direction == UISwipeGestureRecognizerDirectionDown)
-    {
-        NSLog(@"down");
-    }
-}
-
-- (void)dragView:(UIPanGestureRecognizer*)sender
-{
-    CGPoint translation = [sender translationInView:self.view];
-    _dragView.center = CGPointMake(_dragView.center.x, _dragView.center.y + translation.y);//CGPoint(x: viewDrag.center.x + translation.x, y: viewDrag.center.y + translation.y)
-    [sender setTranslation:CGPointZero inView:self.view];
-    if (sender.state == UIGestureRecognizerStateBegan)
-    {
-        NSLog(@"began");
-    }
-    else if (sender.state == UIGestureRecognizerStateChanged)
-    {
-        NSLog(@"changed");
-        CGFloat bottomLeftCorner = _dragView.frame.origin.y + _dragView.frame.size.height;
-        if (bottomLeftCorner < _triggerHorizontalLine) {
-            NSLog(@"should bring forward");
-            [UIView animateWithDuration:0.5
-                                  delay:0
-                 usingSpringWithDamping:0.9
-                  initialSpringVelocity:0
-                                options:UIViewAnimationOptionCurveEaseIn
-                             animations:^{
-                                 _middleView.frame = _initialPositionForFP;
-                             }
-                             completion:nil];
-            [UIView animateWithDuration:0.5
-                                  delay:0.1
-                 usingSpringWithDamping:0.9
-                  initialSpringVelocity:0
-                                options:UIViewAnimationOptionCurveEaseIn
-                             animations:^{
-                                 _behindView.frame = _initialPositionForMP;
-                             }
-                             completion:nil];
-        }
-        else {
-            NSLog(@"bring to back");
-            [UIView animateWithDuration:0.5
-                                  delay:0
-                 usingSpringWithDamping:0.9
-                  initialSpringVelocity:0
-                                options:UIViewAnimationOptionCurveEaseIn
-                             animations:^{
-                                 _middleView.frame = _initialPositionForMP;
-                             }
-                             completion:nil];
-            [UIView animateWithDuration:0.5
-                                  delay:0.1
-                 usingSpringWithDamping:0.9
-                  initialSpringVelocity:0
-                                options:UIViewAnimationOptionCurveEaseIn
-                             animations:^{
-                                 _behindView.frame = _initialPositionForLP;
-                             }
-                             completion:nil];
-        }
-    }
-    else if (sender.state == UIGestureRecognizerStateEnded)
-    {
-        NSLog(@"ended");
-    }
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 
 @end
+
