@@ -109,7 +109,7 @@
     UIImageView *screenshot = [[UIImageView alloc] initWithImage:img];
     screenshot.frame = middleView.frame;
     middleView.alpha = 0;
-    [self.view insertSubview:screenshot aboveSubview:middleView];
+//    [self.view insertSubview:screenshot aboveSubview:middleView];
     //
     [UIView animateWithDuration:0.5
                           delay:0.1
