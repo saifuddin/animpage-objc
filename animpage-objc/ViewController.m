@@ -108,7 +108,7 @@
     UIGraphicsEndImageContext();
     UIImageView *screenshot = [[UIImageView alloc] initWithImage:img];
     screenshot.frame = middleView.frame;
-    middleView.alpha = 0;
+    middleView.alpha = 1;
 //    [self.view insertSubview:screenshot aboveSubview:middleView];
     //
     [UIView animateWithDuration:0.5
