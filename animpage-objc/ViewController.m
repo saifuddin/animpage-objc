@@ -122,7 +122,7 @@
                      }
                      completion:^(BOOL finished){
                          middleView.alpha = 1;
-//                         [screenshot removeFromSuperview];
+                         [screenshot removeFromSuperview];
                      }];
     [UIView animateWithDuration:0.7
                           delay:0.2
