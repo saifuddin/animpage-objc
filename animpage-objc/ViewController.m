@@ -88,55 +88,8 @@
     UIView *frontView = _stackedPages[FRONT];
     UIView *middleView = _stackedPages[MIDDLE];
     UIView *backView = _stackedPages[BACK];
-    
-    [UIView animateWithDuration:0.5
-                          delay:0
-         usingSpringWithDamping:0.9
-          initialSpringVelocity:0
-                        options:UIViewAnimationOptionCurveEaseIn
-                     animations:^{
-                         frontView.frame = _initialPositionForTopView;;
-                         frontView.alpha = 1;
-                     }
-                     completion:nil];
 
-    // Take a screenshot of middleView first
-    middleView.alpha = 1;
-    UIGraphicsBeginImageContext(middleView.bounds.size);
-    [middleView.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    UIImageView *screenshot = [[UIImageView alloc] initWithImage:img];
-    screenshot.frame = middleView.frame;
-    middleView.alpha = 0;
-    [self.view insertSubview:screenshot aboveSubview:middleView];
-    //
-    [UIView animateWithDuration:0.5
-                          delay:0.1
-         usingSpringWithDamping:0.9
-          initialSpringVelocity:0
-                        options:UIViewAnimationOptionCurveEaseIn
-                     animations:^{
-                         middleView.frame = _initialPositionForFrontView;
-                         screenshot.frame = _initialPositionForFrontView;
-                     }
-                     completion:^(BOOL finished){
-//                         middleView.alpha = 0;
-//                         [screenshot removeFromSuperview];
-                     }];
-    [UIView animateWithDuration:0.7
-                          delay:0.2
-         usingSpringWithDamping:0.9
-          initialSpringVelocity:0
-                        options:UIViewAnimationOptionCurveEaseIn
-                     animations:^{
-                         backView.frame = _initialPositionForMiddleView;
-                         backView.alpha = 0.4;
-
-                     }
-                     completion:nil];
-    
-    // Bring topView close but not quiet backViewFrame
+    // Bring topView close but not quiet at backViewFrame frame
     // Then animate going forward a bit
     [self.view sendSubviewToBack:topView];
     topView.alpha = 0;
@@ -149,6 +102,57 @@
                      animations:^{
                          topView.frame = _initialPositionForBackView;
                          topView.alpha = 0.2;
+                     }
+                     completion:nil];
+
+    // Bring backView to Middle
+    // Create actual backView out of the screen
+    // Take a screenshot of backView
+    // substitute backView with screenshot
+    
+//    UIView *actualBackView = [self createDummyPage];
+//    UIImageView *screenshotBackView = [self screenshotView:actualBackView];
+//    screenshotBackView.frame = backView.frame;
+//    [_stackedPages replaceObjectAtIndex:BACK withObject:screenshotBackView];
+//    [self.view insertSubview:screenshotBackView aboveSubview:backView];
+//    backView.alpha = 0;
+//    [backView removeFromSuperview];
+    [UIView animateWithDuration:0.7
+                          delay:0.2
+         usingSpringWithDamping:0.9
+          initialSpringVelocity:0
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         screenshotBackView.frame = _initialPositionForMiddleView;
+                         screenshotBackView.alpha = 0.4;
+                     }
+                     completion:nil];
+
+    // Bring middleView to Front
+    // create actual middleView out of the screen
+    // put middleView screenshot of middleView
+    // after animating finish (going forward), remove screenshot
+    [UIView animateWithDuration:0.5
+                          delay:0.1
+         usingSpringWithDamping:0.9
+          initialSpringVelocity:0
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         middleView.frame = _initialPositionForFrontView;
+                         middleView.alpha = 1;
+                     }
+                     completion:^(BOOL finished){
+                     }];
+
+    // bring frontView to Top
+    [UIView animateWithDuration:0.5
+                          delay:0
+         usingSpringWithDamping:0.9
+          initialSpringVelocity:0
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         frontView.frame = _initialPositionForTopView;;
+                         frontView.alpha = 1;
                      }
                      completion:nil];
 }
@@ -275,9 +279,34 @@
     [self resetRecognizer];
 }
 
+- (UIImageView *)screenshotView:(UIView *)view
+{
+    UIGraphicsBeginImageContext(view.bounds.size);
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return [[UIImageView alloc] initWithImage:img];
+}
+
 - (CGFloat)bottomLeftCornerY:(UIView *)view
 {
     return view.frame.origin.y + view.frame.size.height;
+}
+
+- (UIView *)createDummyPage
+{
+    UIView *v = [[UIView alloc] initWithFrame:_initialPositionForFrontView];
+    v.frame = CGRectMake(self.view.frame.size.width, v.frame.origin.y, v.frame.size.width, v.frame.size.height);
+    v.backgroundColor = [UIColor brownColor];
+    UILabel *lbl1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 150, 30)];
+    lbl1.backgroundColor = [UIColor yellowColor];
+    lbl1.text = @"testing123";
+    [v addSubview:lbl1];
+    lbl1 = [[UILabel alloc] initWithFrame:CGRectMake(v.frame.size.width - 150, 0, 150, 30)];
+    lbl1.backgroundColor = [UIColor redColor];
+    lbl1.text = @"testing123";
+    [v addSubview:lbl1];
+    return v;
 }
 
 @end
