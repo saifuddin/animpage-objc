@@ -108,8 +108,8 @@
     UIGraphicsEndImageContext();
     UIImageView *screenshot = [[UIImageView alloc] initWithImage:img];
     screenshot.frame = middleView.frame;
-    middleView.alpha = 1;
-//    [self.view insertSubview:screenshot aboveSubview:middleView];
+    middleView.alpha = 0;
+    [self.view insertSubview:screenshot aboveSubview:middleView];
     //
     [UIView animateWithDuration:0.5
                           delay:0.1
@@ -121,8 +121,8 @@
                          screenshot.frame = _initialPositionForFrontView;
                      }
                      completion:^(BOOL finished){
-                         middleView.alpha = 1;
-                         [screenshot removeFromSuperview];
+//                         middleView.alpha = 0;
+//                         [screenshot removeFromSuperview];
                      }];
     [UIView animateWithDuration:0.7
                           delay:0.2
