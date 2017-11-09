@@ -123,8 +123,8 @@
           initialSpringVelocity:0
                         options:UIViewAnimationOptionCurveEaseIn
                      animations:^{
-                         screenshotBackView.frame = _initialPositionForMiddleView;
-                         screenshotBackView.alpha = 0.4;
+                         backView.frame = _initialPositionForMiddleView;
+                         backView.alpha = 0.4;
                      }
                      completion:nil];
 
