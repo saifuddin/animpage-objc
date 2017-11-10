@@ -120,7 +120,9 @@
                          topView.frame = _initialPositionForBackView;
                          topView.alpha = 0.2;
                      }
-                     completion:nil];
+                     completion:^(BOOL finished){
+                         
+                     }];
 
     // Bring backView to Middle
     // Create actual backView out of the screen
@@ -143,7 +145,9 @@
                          backView.frame = _initialPositionForMiddleView;
                          backView.alpha = 0.4;
                      }
-                     completion:nil];
+                     completion:^(BOOL finished){
+                         
+                     }];
 
     // Bring middleView to Front
     // create actual middleView out of the screen
@@ -159,9 +163,15 @@
                          middleView.alpha = 1;
                      }
                      completion:^(BOOL finished){
+                         _view3TopConstraint.constant = 0;
+                         _view3BottomConstraint.constant = 0;
+                         _view3LeadingConstraint.constant = 0;
+                         _view3TrailingConstraint.constant = 0;
                      }];
 
     // bring frontView to Top
+    frontView.alpha = 0;
+    return;
     [UIView animateWithDuration:0.5
                           delay:0
          usingSpringWithDamping:0.9
