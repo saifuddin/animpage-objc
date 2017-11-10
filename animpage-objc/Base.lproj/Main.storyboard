@@ -23,9 +23,6 @@
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eZu-y5-Dgw">
                                 <rect key="frame" x="24" y="52" width="327" height="563"/>
-<<<<<<< HEAD
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-=======
                                 <subviews>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aSf-6t-AXR">
                                         <rect key="frame" x="8" y="8" width="311" height="547"/>
@@ -34,7 +31,6 @@
                                         </connections>
                                     </containerView>
                                 </subviews>
->>>>>>> 0d151cde52df55251ad5ab30b27f80d30e66d9e3
                                 <color key="backgroundColor" red="1" green="0.36970808222007945" blue="0.21695327523498609" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="aSf-6t-AXR" firstAttribute="leading" secondItem="eZu-y5-Dgw" secondAttribute="leading" constant="8" id="gSA-Rm-hFb"/>
@@ -84,8 +80,6 @@
             </objects>
             <point key="canvasLocation" x="136.80000000000001" y="133.5832083958021"/>
         </scene>
-<<<<<<< HEAD
-=======
         <!--View Controller-->
         <scene sceneID="iI7-Qh-wm0">
             <objects>
@@ -137,6 +131,5 @@
             </objects>
             <point key="canvasLocation" x="945" y="134"/>
         </scene>
->>>>>>> 0d151cde52df55251ad5ab30b27f80d30e66d9e3
     </scenes>
 </document>
