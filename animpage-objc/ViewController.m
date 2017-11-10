@@ -30,6 +30,23 @@
 @property (nonatomic) CGRect initialPositionForFrontView;
 @property (nonatomic) CGRect initialPositionForMiddleView;
 @property (nonatomic) CGRect initialPositionForBackView;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *view2TopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *view2BottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *view2LeadingConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *view2TrailingContraint;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *view1ToView2VerticalConstraint;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *view3TopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *view3BottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *view3LeadingConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *view3TrailingConstraint;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *view4TopContraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *view4BottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *view4LeadingConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *view4TrailingConstraint;
 @end
 
 @implementation ViewController

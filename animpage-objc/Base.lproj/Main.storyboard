@@ -71,9 +71,22 @@
                     </view>
                     <connections>
                         <outlet property="view1" destination="748-p4-ZsS" id="Y0w-op-Aic"/>
+                        <outlet property="view1ToView2VerticalConstraint" destination="lN7-XG-3Ld" id="6aS-tQ-HbK"/>
                         <outlet property="view2" destination="MLD-4O-D9R" id="gaj-3Z-6Yd"/>
+                        <outlet property="view2BottomConstraint" destination="0cq-Lt-u6L" id="VqK-xm-Evd"/>
+                        <outlet property="view2LeadingConstraint" destination="rN1-SR-UJZ" id="MuP-sz-giH"/>
+                        <outlet property="view2TopConstraint" destination="COA-vT-BG7" id="L3b-Fy-GJQ"/>
+                        <outlet property="view2TrailingContraint" destination="OXh-lC-dNc" id="lw7-CA-OgV"/>
                         <outlet property="view3" destination="eZu-y5-Dgw" id="a1C-dk-Rl1"/>
+                        <outlet property="view3BottomConstraint" destination="KCY-xo-O1S" id="89W-NN-YEl"/>
+                        <outlet property="view3LeadingConstraint" destination="wi1-dI-tl9" id="Nuv-qa-wJd"/>
+                        <outlet property="view3TopConstraint" destination="NV6-2Q-84s" id="dge-7r-XlC"/>
+                        <outlet property="view3TrailingConstraint" destination="ngO-sR-i40" id="jsb-ey-Zi1"/>
                         <outlet property="view4" destination="ZoN-vG-atn" id="dWZ-2n-OCc"/>
+                        <outlet property="view4BottomConstraint" destination="OQx-Jb-iQ8" id="OnQ-wZ-VP9"/>
+                        <outlet property="view4LeadingConstraint" destination="fd6-Rd-IM2" id="EAO-Qt-RSx"/>
+                        <outlet property="view4TopContraint" destination="hfz-7G-Dh1" id="gWn-Yg-wgw"/>
+                        <outlet property="view4TrailingConstraint" destination="fd6-Rd-IM2" id="lE1-Yc-432"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
