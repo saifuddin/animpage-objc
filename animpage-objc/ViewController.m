@@ -153,6 +153,10 @@
     // create actual middleView out of the screen
     // put middleView screenshot of middleView
     // after animating finish (going forward), remove screenshot
+    _view3TopConstraint.constant = 0;
+    _view3BottomConstraint.constant = 0;
+    _view3LeadingConstraint.constant = 0;
+    _view3TrailingConstraint.constant = 0;
     [UIView animateWithDuration:0.5
                           delay:0.1
          usingSpringWithDamping:0.9
@@ -163,10 +167,7 @@
                          middleView.alpha = 1;
                      }
                      completion:^(BOOL finished){
-                         _view3TopConstraint.constant = 0;
-                         _view3BottomConstraint.constant = 0;
-                         _view3LeadingConstraint.constant = 0;
-                         _view3TrailingConstraint.constant = 0;
+
                      }];
 
     // bring frontView to Top
