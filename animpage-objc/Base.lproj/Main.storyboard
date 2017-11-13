@@ -32,15 +32,20 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eZu-y5-Dgw">
                                 <rect key="frame" x="24" y="50" width="327" height="567"/>
                                 <subviews>
-                                    <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aSf-6t-AXR">
-                                        <rect key="frame" x="8" y="8" width="311" height="547"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aSf-6t-AXR">
+                                        <rect key="frame" x="8" y="8" width="311" height="551"/>
                                         <connections>
                                             <segue destination="mow-ra-rwD" kind="embed" id="dnZ-lw-79m"/>
                                         </connections>
                                     </containerView>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="0.36970808222007945" blue="0.21695327523498609" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="aSf-6t-AXR" firstAttribute="leading" secondItem="eZu-y5-Dgw" secondAttribute="leading" constant="8" id="0kR-aa-SAE"/>
+                                    <constraint firstItem="aSf-6t-AXR" firstAttribute="top" secondItem="eZu-y5-Dgw" secondAttribute="top" constant="8" id="75n-SM-Uof"/>
+                                    <constraint firstAttribute="bottom" secondItem="aSf-6t-AXR" secondAttribute="bottom" constant="8" id="Cg9-Fs-048"/>
+                                    <constraint firstAttribute="trailing" secondItem="aSf-6t-AXR" secondAttribute="trailing" constant="8" id="JXY-Lx-LU5"/>
+                                </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MLD-4O-D9R">
                                 <rect key="frame" x="16" y="82" width="343" height="571"/>
@@ -91,7 +96,7 @@
             <objects>
                 <viewController id="mow-ra-rwD" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mEO-Aw-0O8">
-                        <rect key="frame" x="0.0" y="0.0" width="311" height="547"/>
+                        <rect key="frame" x="0.0" y="0.0" width="311" height="551"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fn3-Nt-Prh">
