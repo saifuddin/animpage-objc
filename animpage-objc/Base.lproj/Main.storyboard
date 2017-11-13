@@ -82,9 +82,25 @@
                     </view>
                     <connections>
                         <outlet property="view1" destination="748-p4-ZsS" id="Y0w-op-Aic"/>
+                        <outlet property="view1BottomConstraint" destination="XtL-CZ-CBO" id="Ubv-wR-phY"/>
+                        <outlet property="view1LeadingConstraint" destination="Ab7-E1-10e" id="diD-KH-l90"/>
+                        <outlet property="view1TopConstraint" destination="cjf-QO-nVm" id="TFG-V8-YLI"/>
+                        <outlet property="view1TrailingContraint" destination="saI-bc-OUD" id="XT2-G4-npF"/>
                         <outlet property="view2" destination="MLD-4O-D9R" id="gaj-3Z-6Yd"/>
+                        <outlet property="view2BottomConstraint" destination="NiE-LN-x5P" id="ePE-xv-OqE"/>
+                        <outlet property="view2LeadingConstraint" destination="i2W-fe-fyn" id="hox-1t-Swj"/>
+                        <outlet property="view2TopConstraint" destination="Bnf-pf-ocw" id="Yyn-4E-88i"/>
+                        <outlet property="view2TrailingContraint" destination="sgG-z1-Y1k" id="6Te-jU-UI7"/>
                         <outlet property="view3" destination="eZu-y5-Dgw" id="a1C-dk-Rl1"/>
+                        <outlet property="view3BottomConstraint" destination="Ibt-9K-1uS" id="30r-Aj-lbN"/>
+                        <outlet property="view3LeadingConstraint" destination="O8Z-uu-PDm" id="KXG-c0-6Hr"/>
+                        <outlet property="view3TopConstraint" destination="yWR-dz-f5s" id="8gu-VL-6Oh"/>
+                        <outlet property="view3TrailingConstraint" destination="Bgp-aG-uRh" id="y0n-0o-Wt4"/>
                         <outlet property="view4" destination="ZoN-vG-atn" id="dWZ-2n-OCc"/>
+                        <outlet property="view4BottomConstraint" destination="TL6-bE-KJI" id="nbs-RW-clL"/>
+                        <outlet property="view4LeadingConstraint" destination="Nbk-eY-17o" id="p63-7S-SRb"/>
+                        <outlet property="view4TopContraint" destination="Nju-RZ-l0e" id="HO3-9H-bS3"/>
+                        <outlet property="view4TrailingConstraint" destination="I5r-Sb-h1N" id="sDW-RQ-XK1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
