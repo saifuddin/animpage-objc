@@ -179,6 +179,7 @@
     // create actual middleView out of the screen
     // put middleView screenshot of middleView
     // after animating finish (going forward), remove screenshot
+    [self.view bringSubviewToFront:middleView];
     _view3TopConstraint.constant = [(NSNumber *)_frontViewConstraintsConstants[CONSTRAINT_TOP] doubleValue];
     _view3BottomConstraint.constant = [(NSNumber *)_frontViewConstraintsConstants[CONSTRAINT_BOTTOM] doubleValue];
     _view3LeadingConstraint.constant = [(NSNumber *)_frontViewConstraintsConstants[CONSTRAINT_LEADING] doubleValue];
@@ -197,6 +198,7 @@
                      }];
 
     // bring frontView to Top
+    [self.view bringSubviewToFront:frontView];
     _view2TopConstraint.constant = [(NSNumber *)_topViewConstraintsConstants[CONSTRAINT_TOP] doubleValue];
     _view2BottomConstraint.constant = [(NSNumber *)_topViewConstraintsConstants[CONSTRAINT_BOTTOM] doubleValue];
     _view2LeadingConstraint.constant = [(NSNumber *)_topViewConstraintsConstants[CONSTRAINT_LEADING] doubleValue];
